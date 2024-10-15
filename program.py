@@ -1,6 +1,7 @@
 import pygame
 import math
 pygame.init()
+import matplotlib.pyplot as plt
 
 WHITE = (255, 255, 255)
 BLACK = (0,0,0)
@@ -16,9 +17,8 @@ electric field strength = E
 initial gyrophase = theta_0
 drift velocity = U
 """
-
 E = 50
-B = 10
+B = 0.31 * 10 **-2
 theta_0 = 0
 
 
@@ -38,12 +38,11 @@ class Ion:
         pygame.draw.lines(WIN, self.color, False, points, 2)
 
 
-
     def trajectory(self):
         self.motion = []
         self.t = 0
 
-        dt = 0.01
+        dt = 0.001
 
         angular_position = self.charge * B / self.mass
 
@@ -60,20 +59,24 @@ class Ion:
             self.motion.append((x, y))
 
             self.t += dt
-
-
         
         return self.motion
+    
+    def plot(self):
+        x_coords = [(point[0] - WIDTH//2) for point in self.motion]
+        y_coords = [(point[1] - HEIGHT//2) for point in self.motion]
+
+        plt.plot(x_coords, y_coords, label=f"Ion (charge={self.charge}, mass={self.mass})")
 
 
 def main():
     run = True
     clock = pygame.time.Clock()
 
-    hydrogen  = Ion(0, 0, +6, 1, 5, BLACK)
-    helium = Ion(0, 0, +2, +2, 5, BLUE)
+    hydrogen  = Ion(0, 0, +1, 16, 0.5, BLACK)
+    oxygen = Ion(0, 0, -1, +16, 0.5, BLUE)
 
-    ions = [hydrogen, helium]
+    ions = [hydrogen, oxygen]
 
     while run:
         clock.tick(60)
@@ -88,6 +91,15 @@ def main():
             ion.draw(WIN)
 
         pygame.display.update()
+
+    for ion in ions:
+        ion.plot()
+
+    plt.xlabel("X Position")
+    plt.ylabel("Y Position")
+    plt.title("Ion Trajectories")
+    plt.legend()
+    plt.show()
 
     pygame.quit()
 
