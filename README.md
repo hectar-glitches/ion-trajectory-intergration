@@ -1,8 +1,6 @@
 # ion-trajectory-intergration
 Project with Professor Wendy Tseng on simulations involving ion movement in Titan's exobase
 
-Certainly! Here’s a sample README file for your project. You can adjust or add more details as needed.
-
 ---
 
 # Ion Trajectory Visualization
@@ -21,7 +19,7 @@ The simulation considers the trajectory of ions as cycloidal paths based on prov
 
 ## Installation
 
-To get started, ensure you have Python and Pygame installed. You can install Pygame using pip:
+To get started, ensure you have Python installed.
 
 ```bash
 pip install pygame
