@@ -6,6 +6,8 @@ import pandas as pd
 import seaborn as sns
 from math import radians, cos, sin, asin, sqrt
 from mpl_toolkits.mplot3d import Axes3D
+import pygame
+from pygame.locals import QUIT
 
 # %%
 # Data file from "https://uknowledge.uky.edu/ees_data/2/#attach_additional_files"
@@ -421,3 +423,54 @@ plot_histogram_final_positions(trajectories)
 plot_histogram_final_positions(voyager_trajectories)
 plot_initial_vs_final_velocities(trajectories)
 plot_initial_vs_final_velocities(voyager_trajectories)
+
+# Initialize Pygame
+pygame.init()
+
+# Set up display
+width, height = 800, 600
+screen = pygame.display.set_mode((width, height))
+pygame.display.set_caption('Ion Trajectory Simulation')
+
+# Colors
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+ION_COLOR = (0, 255, 0)
+
+def draw_trajectories_pygame(trajectories):
+    running = True
+    clock = pygame.time.Clock()
+    scale = 10  # Scale factor for visualization
+
+    while running:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                running = False
+
+        screen.fill(BLACK)
+
+        for ion, traj in trajectories.items():
+            traj = np.array(traj)
+            for i in range(len(traj) - 1):
+                start_pos = (int(traj[i, 0] * scale + width // 2), int(traj[i, 1] * scale + height // 2))
+                end_pos = (int(traj[i + 1, 0] * scale + width // 2), int(traj[i + 1, 1] * scale + height // 2))
+                pygame.draw.line(screen, ION_COLOR, start_pos, end_pos, 2)
+
+        pygame.display.flip()
+        clock.tick(30)
+
+    pygame.quit()
+
+# Main simulation parameters
+NUM_IONS = 10
+STEPS = 100
+DT = 0.01
+
+# Generate random ions
+ions = generate_random_ions(NUM_IONS)
+
+# Simulate ion trajectories
+trajectories = simulate_ions(ions, STEPS, DT, position_fields, electric_field)
+
+# Plot the trajectories using Pygame
+draw_trajectories_pygame(trajectories)
