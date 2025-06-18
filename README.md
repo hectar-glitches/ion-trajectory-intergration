@@ -1,9 +1,6 @@
 # ion-trajectory-intergration
-Project with Professor Wendy Tseng on simulations involving ion movement in Titan's exobase
+Project with a Professor on simulations involving ion movement in Titan's exobase
 
-Certainly! Here’s a sample README file for your project. You can adjust or add more details as needed.
-
----
 
 # Ion Trajectory Visualization
 
@@ -11,7 +8,7 @@ This project visualizes the trajectory of ions in a uniform magnetic and electri
 
 ## Overview
 
-The simulation considers the trajectory of ions as cycloidal paths based on provided physical parameters. The paths are calculated using the ion's charge, mass, and the strengths of the electric and magnetic fields.
+The simulation considers the trajectory of ions as cycloidal paths based on the provided physical parameters. The paths are calculated using the ion's charge, mass, and the strengths of the electric and magnetic fields.
 
 ## Features
 
