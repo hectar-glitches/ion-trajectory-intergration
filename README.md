@@ -1,5 +1,5 @@
 # ion-trajectory-intergration
-Project with a Professor on simulations involving ion movement in Titan's exobase
+Project with a Professor on simulations involving replicating the observed ion movement in Titan's exobase to our own moon
 
 
 # Ion Trajectory Visualization
