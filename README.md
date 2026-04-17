@@ -47,7 +47,7 @@ pip install pygame
     - `data/Voyager1_Magnetic_Field_Data.dat`  
       Source: Voyager 1 mission data
 
-    > Backward compatibility: `New Magnetic Field Models of the Moon.dat` in the project root is still supported.
+    > Backward compatibility: both `New Magnetic Field Models of the Moon.dat` and `Voyager1_Magnetic_Field_Data.dat` in the project root are still supported.
 
 4. **Run the simulation:**
 

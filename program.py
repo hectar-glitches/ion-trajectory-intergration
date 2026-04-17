@@ -39,7 +39,7 @@ def resolve_data_path(cli_path, cli_flag_name, env_var_name, default_filename):
         default_filename: Expected dataset filename.
 
     Returns:
-        pathlib.Path: The first existing path found from the candidate list.
+        pathlib.Path: The first existing path found in precedence order.
 
     Raises:
         FileNotFoundError: If no candidate path exists.
