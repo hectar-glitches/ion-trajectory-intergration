@@ -1,18 +1,62 @@
 # %%
 # Libraries used
+import argparse
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
+from pathlib import Path
 from math import radians, cos, sin, asin, sqrt
 from mpl_toolkits.mplot3d import Axes3D
 import pygame
 from pygame.locals import QUIT
 
 # %%
+BASE_DIR = Path(__file__).resolve().parent
+DATA_DIR = BASE_DIR / "data"
+
+
+def parse_cli_args():
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument("--moon-data", dest="moon_data_path", default=None)
+    parser.add_argument("--voyager-data", dest="voyager_data_path", default=None)
+    args, _ = parser.parse_known_args()
+    return args
+
+
+CLI_ARGS = parse_cli_args()
+
+
+def resolve_data_path(cli_path, cli_flag_name, env_var_name, default_filename):
+    candidates = []
+    if cli_path:
+        candidates.append(Path(cli_path).expanduser())
+    env_value = os.getenv(env_var_name)
+    if env_value:
+        candidates.append(Path(env_value).expanduser())
+    candidates.extend([DATA_DIR / default_filename, BASE_DIR / default_filename])
+
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate
+
+    searched_locations = "\n".join(f"- {path.resolve()}" for path in candidates)
+    raise FileNotFoundError(
+        f"Could not locate '{default_filename}'. Tried:\n{searched_locations}\n"
+        f"Set {cli_flag_name} or {env_var_name}."
+    )
+
+
+# %%
 # Data file from "https://uknowledge.uky.edu/ees_data/2/#attach_additional_files"
 # Columns are : Longitude (degree), Latitude (degree), Br, Btheta, Bphi and Total Field components
-file_path = '.../New Magnetic Field Models of the Moon.dat'
+file_path = resolve_data_path(
+    CLI_ARGS.moon_data_path,
+    "--moon-data",
+    "MOON_DATA_PATH",
+    "New Magnetic Field Models of the Moon.dat",
+)
 
 # %%
 # Functions to read coordinates and magnetic field data
@@ -75,7 +119,7 @@ plt.show()
 
 # %%
 # Load data into DataFrame and plot heatmap
-df = pd.read_csv(file_path, sep="\s+", header=None)
+df = pd.read_csv(file_path, sep=r"\s+", header=None)
 df.columns = ['Longitude (degree)', 'Latitude (degree)', 'Field Value 1', 'Field Value 2', 'Field Value 3', 'Total Field components']
 
 df_localized = df.head(100)
@@ -321,7 +365,12 @@ plot_initial_vs_final_velocities(trajectories)
 # %%
 # Data file from Voyager 1 mission
 # Columns are : Longitude (degree), Latitude (degree), Br, Btheta, Bphi and Total Field components
-voyager_file_path = '/Users/hectar/Downloads/Voyager1_Magnetic_Field_Data.dat'
+voyager_file_path = resolve_data_path(
+    CLI_ARGS.voyager_data_path,
+    "--voyager-data",
+    "VOYAGER_DATA_PATH",
+    "Voyager1_Magnetic_Field_Data.dat",
+)
 
 # Functions to read coordinates and magnetic field data from Voyager 1
 def read_voyager_coordinates(index):
@@ -369,7 +418,7 @@ plt.show()
 
 # %%
 # Load Voyager 1 data into DataFrame and plot heatmap
-voyager_df = pd.read_csv(voyager_file_path, sep="\s+", header=None)
+voyager_df = pd.read_csv(voyager_file_path, sep=r"\s+", header=None)
 voyager_df.columns = ['Longitude (degree)', 'Latitude (degree)', 'Field Value 1', 'Field Value 2', 'Field Value 3', 'Total Field components']
 
 voyager_df_localized = voyager_df.head(100)

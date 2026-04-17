@@ -38,13 +38,38 @@ pip install pygame
     cd ion-trajectory
     ```
 
-3. **Run the simulation:**
+3. **Download dataset files (required):**
+
+    Place data files in a `data/` directory at the project root:
+
+    - `data/New Magnetic Field Models of the Moon.dat`  
+      Source: [UKnowledge](https://uknowledge.uky.edu/ees_data/2/#attach_additional_files)
+    - `data/Voyager1_Magnetic_Field_Data.dat`  
+      Source: Voyager 1 mission data
+
+    > Backward compatibility: `New Magnetic Field Models of the Moon.dat` in the project root is still supported.
+
+4. **Run the simulation:**
 
     ```bash
     python program.py
     ```
 
-4. **Adjust the Parameters:**
+    You can also pass explicit paths:
+
+    ```bash
+    python program.py --moon-data /path/to/New\ Magnetic\ Field\ Models\ of\ the\ Moon.dat --voyager-data /path/to/Voyager1_Magnetic_Field_Data.dat
+    ```
+
+    Or use environment variables:
+
+    ```bash
+    export MOON_DATA_PATH=/path/to/New\ Magnetic\ Field\ Models\ of\ the\ Moon.dat
+    export VOYAGER_DATA_PATH=/path/to/Voyager1_Magnetic_Field_Data.dat
+    python program.py
+    ```
+
+5. **Adjust the Parameters:**
 
     Open `program.py` to modify the following parameters:
 
