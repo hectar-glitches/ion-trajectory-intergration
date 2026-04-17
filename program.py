@@ -156,7 +156,8 @@ def derivatives(state, q, m, position_field_array, electric_field):
     height = position[2]
     E = electric_field(height)
     position_field_array = np.array(position_field_array)
-    distance_xy_values = np.linalg.norm(position_field_array[:, 0:2] - position[0:2], axis=1)
+    position_xy = position[0:2]
+    distance_xy_values = np.linalg.norm(position_field_array[:, 0:2] - position_xy, axis=1)
     closest_index = np.argmin(distance_xy_values)
     Bz_strength = position_field_array[closest_index, 2]
     B = np.array([0.0, 0.0, Bz_strength])
