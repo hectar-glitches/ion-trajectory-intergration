@@ -91,6 +91,23 @@ pip install pygame
   - Sets up the Pygame window and initializes ions.
   - Continuously updates the display and draws the ion trajectories.
 
+## Physics and coordinate conventions
+
+- **Force law:** The ion dynamics use the Lorentz force
+  \[
+  \mathbf{F} = q(\mathbf{E} + \mathbf{v}\times\mathbf{B})
+  \]
+  with acceleration \(\mathbf{a} = \mathbf{F}/m\).
+- **`position_field_array` / `position_fields` format:** each row is interpreted as
+  `(x_coordinate, y_coordinate, Bz_strength)`.
+  The nearest `(x, y)` sample to the ion is used as the local magnetic field value.
+- **Magnetic-field vector convention:** the sampled scalar is mapped to
+  `B = [0, 0, Bz_strength]` (field along the +z/-z axis only in the current model).
+- **Units in code:** charge in coulombs (`q`), mass in kilograms (`m`), velocity in m/s,
+  electric field in V/m, magnetic field in tesla-equivalent field-strength units from the
+  input dataset, and position in model coordinate units (used directly as x/y/z state
+  coordinates throughout the simulation).
+
 ## Acknowledgements
 
 - Data from [UKnowledge](https://uknowledge.uky.edu/ees_data/2/#attach_additional_files)

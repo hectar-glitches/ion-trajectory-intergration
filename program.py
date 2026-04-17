@@ -111,7 +111,8 @@ print("Smallest difference between consecutive y-values:", y_diff_min)
 print("Largest difference between consecutive y-values:", y_diff_max)
 
 # %%
-# Prepare magnetic field data for plotting
+# Prepare magnetic-field sample data for plotting and simulation.
+# Each row is (x_coordinate, y_coordinate, Bz_strength).
 position_fields = list(zip(x_values, y_values, field))
 position_field_array = np.array(position_fields)
 
@@ -203,20 +204,24 @@ def distance_3d(lat1, lat2, lon1, lon2, z1, z2):
 # %%
 # Derivatives and Runge-Kutta functions
 def derivatives(state, q, m, position_field_array, electric_field):
+    """
+    Compute [dr/dt, dv/dt] using the Lorentz force F = q(E + v x B).
+
+    `position_field_array` is an array-like of magnetic-field samples where each
+    row is (x_coordinate, y_coordinate, Bz_strength). The nearest (x, y) sample
+    is selected and treated as a local magnetic-field vector [0, 0, Bz_strength].
+    """
     position = state[0:3]
     velocity = state[3:6]
     height = position[2]
     E = electric_field(height)
     position_field_array = np.array(position_field_array)
-    distance_3d_values = np.array([
-        distance_3d(position[1], y, position[0], x, position[2], z)
-        for x, y, z in position_field_array[:, 0:3]
-    ])
-    closest_index = np.argmin(distance_3d_values)
-    B = position_field_array[closest_index, 0:3]
-    magnetic_force = np.cross(velocity, B)
-    electric_force = q * E
-    total_force = electric_force + magnetic_force
+    position_xy = position[0:2]
+    distance_xy_values = np.linalg.norm(position_field_array[:, 0:2] - position_xy, axis=1)
+    closest_index = np.argmin(distance_xy_values)
+    Bz_strength = position_field_array[closest_index, 2]
+    B = np.array([0.0, 0.0, Bz_strength])
+    total_force = q * (E + np.cross(velocity, B))
     acceleration = total_force / m
     drdt = velocity
     dvdt = acceleration
