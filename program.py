@@ -18,7 +18,7 @@ DATA_DIR = BASE_DIR / "data"
 
 
 def parse_cli_args():
-    parser = argparse.ArgumentParser(add_help=False)
+    parser = argparse.ArgumentParser()
     parser.add_argument("--moon-data", dest="moon_data_path", default=None)
     parser.add_argument("--voyager-data", dest="voyager_data_path", default=None)
     args, _ = parser.parse_known_args()
@@ -29,6 +29,7 @@ CLI_ARGS = parse_cli_args()
 
 
 def resolve_data_path(cli_path, cli_flag_name, env_var_name, default_filename):
+    """Resolve dataset path by precedence: CLI argument, env var, data/, then project root."""
     candidates = []
     if cli_path:
         candidates.append(Path(cli_path).expanduser())
