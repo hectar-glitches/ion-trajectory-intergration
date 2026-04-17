@@ -29,7 +29,21 @@ CLI_ARGS = parse_cli_args()
 
 
 def resolve_data_path(cli_path, cli_flag_name, env_var_name, default_filename):
-    """Resolve dataset path by precedence: CLI argument, env var, data/, then project root."""
+    """
+    Resolve a dataset path by precedence: CLI argument, env var, data/, then project root.
+
+    Args:
+        cli_path: Optional path provided by CLI argument.
+        cli_flag_name: The CLI flag users can pass (e.g., "--moon-data").
+        env_var_name: The environment variable name for this dataset path.
+        default_filename: Expected dataset filename.
+
+    Returns:
+        pathlib.Path: The first existing path found from the candidate list.
+
+    Raises:
+        FileNotFoundError: If no candidate path exists.
+    """
     candidates = []
     if cli_path:
         candidates.append(Path(cli_path).expanduser())
@@ -45,7 +59,8 @@ def resolve_data_path(cli_path, cli_flag_name, env_var_name, default_filename):
     searched_locations = "\n".join(f"- {path.resolve()}" for path in candidates)
     raise FileNotFoundError(
         f"Could not locate '{default_filename}'. Tried:\n{searched_locations}\n"
-        f"Set {cli_flag_name} or {env_var_name}."
+        f"Place the file at data/{default_filename}, or set {cli_flag_name} "
+        f"or {env_var_name}."
     )
 
 
