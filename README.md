@@ -24,6 +24,12 @@ To get started, ensure you have Python and Pygame installed. You can install Pyg
 pip install pygame
 ```
 
+For running tests, install `pytest`:
+
+```bash
+pip install pytest
+```
+
 ## Usage
 
 1. **Clone the repository:**
@@ -43,6 +49,14 @@ pip install pygame
     ```bash
     python program.py
     ```
+
+## Testing
+
+Run the test suite with:
+
+```bash
+pytest
+```
 
 4. **Adjust the Parameters:**
 
