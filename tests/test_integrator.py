@@ -84,7 +84,7 @@ def test_runge_kutta_electric_only_matches_parabolic_motion():
 def test_simulate_ions_magnetic_only_keeps_speed_magnitude():
     ion = Ion(
         mass=1.0,
-        charge=0.0,
+        charge=1.0,
         initial_position=np.array([0.0, 0.0, 0.0]),
         initial_velocity=np.array([1.0, 0.0, 0.0]),
     )
